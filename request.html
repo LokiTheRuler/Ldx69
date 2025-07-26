@@ -1,135 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Request Portfolio – FolioBuilder</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #0d0d0d;
-      font-family: 'Orbitron', sans-serif;
-      color: white;
-      margin: 0;
-      padding: 30px 20px;
-    }
+<form id="portfolioForm">
+  <label>Full Name:</label>
+  <input type="text" name="name" required />
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 2.2rem;
-    }
+  <label>Email Address:</label>
+  <input type="email" name="email" required />
 
-    form {
-      max-width: 600px;
-      margin: auto;
-      background: #1a1a1a;
-      padding: 25px;
-      border-radius: 15px;
-    }
+  <label>Bio (short intro):</label>
+  <textarea name="bio" rows="3" required></textarea>
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-size: 0.95rem;
-    }
+  <label>Profile Picture URL:</label>
+  <input type="url" name="profilePic" />
 
-    input, textarea, select {
-      width: 100%;
-      padding: 10px;
-      background: #262626;
-      border: none;
-      border-radius: 8px;
-      margin-top: 5px;
-      color: white;
-    }
+  <label>Social Links (comma-separated):</label>
+  <input type="text" name="socialLinks" placeholder="Twitter, GitHub, LinkedIn, etc." />
 
-    .btn {
-      margin-top: 25px;
-      width: 100%;
-      background: #ffcc00;
-      color: black;
-      font-weight: bold;
-      padding: 12px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s ease;
-    }
+  <label>Resume (Google Drive or link):</label>
+  <input type="url" name="resume" />
 
-    .btn:hover {
-      background: #ffaa00;
-    }
+  <label>Extra Feature:</label>
+  <select name="feature">
+    <option value="none">None</option>
+    <option value="animatedText">Animated Text</option>
+    <option value="scrollReveal">Scroll Reveal</option>
+  </select>
 
-    .theme-preview {
-      color: #ffcc00;
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
-  </style>
-</head>
-<body>
+  <label>Preferred Payment Method:</label>
+  <select name="payment" required>
+    <option value="TON">TON</option>
+    <option value="USDT">USDT</option>
+    <option value="UPI">UPI</option>
+    <option value="Stripe">Stripe</option>
+  </select>
 
-  <h1>Submit Your Portfolio Request</h1>
+  <button type="submit" class="btn">Submit & Generate</button>
+</form>
 
-  <div class="theme-preview">
-    Selected Theme: <span id="themeName">Loading...</span>
-  </div>
-
-  <form id="portfolioForm" action="timer.html">
-    <label>Full Name:</label>
-    <input type="text" required />
-
-    <label>Email Address:</label>
-    <input type="email" required />
-
-    <label>Bio (short intro):</label>
-    <textarea rows="3" required></textarea>
-
-    <label>Profile Picture URL:</label>
-    <input type="url" />
-
-    <label>Social Links (comma-separated):</label>
-    <input type="text" placeholder="Twitter, GitHub, LinkedIn, etc." />
-
-    <label>Resume (Google Drive or link):</label>
-    <input type="url" />
-
-    <label>Extra Feature:</label>
-    <select>
-      <option value="none">None</option>
-      <option value="animatedText">Animated Text</option>
-      <option value="scrollReveal">Scroll Reveal</option>
-    </select>
-
-    <label>Preferred Payment Method:</label>
-    <select required>
-      <option value="TON">TON</option>
-      <option value="USDT">USDT</option>
-      <option value="UPI">UPI</option>
-      <option value="Stripe">Stripe</option>
-    </select>
-
-    <button type="submit" class="btn">Submit & Generate</button>
-  </form>
-
-  <script>
-    // Get theme from URL and display
-    const params = new URLSearchParams(window.location.search);
-    const theme = params.get('theme');
-    document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
 <script>
-  const form = document.querySelector("form");
+  // Show selected theme name
+  const params = new URLSearchParams(window.location.search);
+  const theme = params.get('theme');
+  document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
+
+  // Handle form submission
+  const form = document.getElementById("portfolioForm");
 
   form.addEventListener("submit", function (e) {
-    e.preventDefault(); // prevent immediate redirect
+    e.preventDefault(); // Prevent default form behavior
 
-    // Show fake timer modal or alert
+    // TODO: Add FormsFree or EmailJS logic here
+
+    // Show fake timer
     alert("Your request has been received!\nWe are generating your portfolio. Please wait for 30–60 minutes.");
 
-    // Simulate wait by redirecting after 3 seconds
     setTimeout(() => {
       window.location.href = "success.html";
     }, 3000);
