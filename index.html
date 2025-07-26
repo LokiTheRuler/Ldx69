@@ -1,40 +1,78 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-black text-white">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Explore Portfolio Themes</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  </head>
-  <body class="min-h-screen px-6 py-10">
-    <h1 class="text-4xl font-bold mb-8 text-yellow-400">Explore Themes & Request Portfolio</h1>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FolioBuilder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 0 20px;
+    }
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Theme Card -->
-      <div class="bg-neutral-900 rounded-xl shadow-lg p-4">
-        <img src="https://via.placeholder.com/400x250.png?text=Mystic+Shadow" alt="Mystic Shadow" class="rounded-xl mb-4" />
-        <h2 class="text-xl font-semibold">Mystic Shadow</h2>
-        <p class="text-sm text-gray-300 mb-4">Dark theme with glowing buttons and a mysterious vibe.</p>
-        <a href="request.html?theme=mystic" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Select Theme</a>
-      </div>
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
 
-      <div class="bg-neutral-900 rounded-xl shadow-lg p-4">
-        <img src="https://via.placeholder.com/400x250.png?text=Minimal+Light" alt="Minimal Light" class="rounded-xl mb-4" />
-        <h2 class="text-xl font-semibold">Minimal Light</h2>
-        <p class="text-sm text-gray-300 mb-4">Clean and modern layout with white & soft shadows.</p>
-        <a href="request.html?theme=light" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Select Theme</a>
-      </div>
+    p {
+      font-size: 1.2rem;
+      color: #bbbbbb;
+      margin-bottom: 40px;
+    }
 
-      <div class="bg-neutral-900 rounded-xl shadow-lg p-4">
-        <img src="https://via.placeholder.com/400x250.png?text=Digital+Samurai" alt="Digital Samurai" class="rounded-xl mb-4" />
-        <h2 class="text-xl font-semibold">Digital Samurai</h2>
-        <p class="text-sm text-gray-300 mb-4">Neon, red-black layout inspired by cyberpunk UI.</p>
-        <a href="request.html?theme=samurai" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Select Theme</a>
-      </div>
-    </div>
+    .btn-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-    <footer class="mt-12 text-center text-sm text-gray-400">
-      ⚡️ Loki Portfolio Builder — Powered by TON, USDT, UPI & Stripe
-    </footer>
-  </body>
-          </html>
+    .btn {
+      background: #ffcc00;
+      color: #000;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #ffaa00;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffcc00;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">FolioBuilder</div>
+  <h1>Craft Your Digital Presence</h1>
+  <p>Design. Impress. Stand Out. <br> Start your personal portfolio today.</p>
+
+  <div class="btn-container">
+    <a href="themes.html" class="btn">View Themes</a>
+    <a href="request.html" class="btn">Build Your Portfolio</a>
+  </div>
+
+</body>
+</html>
