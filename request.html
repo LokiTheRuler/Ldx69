@@ -120,7 +120,18 @@
     const params = new URLSearchParams(window.location.search);
     const theme = params.get('theme');
     document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
-  </script>
+<script>
+  const form = document.querySelector("form");
 
-</body>
-        </html>
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // prevent immediate redirect
+
+    // Show fake timer modal or alert
+    alert("Your request has been received!\nWe are generating your portfolio. Please wait for 30–60 minutes.");
+
+    // Simulate wait by redirecting after 3 seconds
+    setTimeout(() => {
+      window.location.href = "success.html";
+    }, 3000);
+  });
+</script>
