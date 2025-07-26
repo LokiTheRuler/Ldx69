@@ -155,39 +155,53 @@
       <option value="Stripe">Stripe</option>
     </select>
 
-    <button type="submit" class="btn">
-      Submit & Generate
-      <span class="spinner" id="spinner"></span>
-    </button>
-  </form>
+    <button type="submit" id="submitBtn">
+  <span id="btnText">Request Portfolio</span>
+  <span id="btnSpinner" style="display: none;">⏳</span>
+</button>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const theme = params.get('theme');
-    document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
+  <!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-    const form = document.getElementById("portfolioForm");
-    const spinner = document.getElementById("spinner");
+<!-- Loader + Form Submission Script -->
+<script type="text/javascript">
+  // Initialize EmailJS
+  (function () {
+    emailjs.init("GTDBjfcWeeqJfDY_-"); // Your Public Key
+  })();
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+  // Form submission handler
+  document.getElementById("folioForm").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
+    const form = this;
+    const btn = document.getElementById("submitBtn");
+    const btnText = document.getElementById("btnText");
+    const btnSpinner = document.getElementById("btnSpinner");
 
-      if (!name || !email) {
-        alert("Please fill out all required fields.");
-        return;
+    // Show loading spinner
+    btn.disabled = true;
+    btnText.style.display = "none";
+    btnSpinner.style.display = "inline-block";
+
+    // Send email using EmailJS
+    emailjs.sendForm("service_digqqt9", "template_crjq52q", form).then(
+      () => {
+        alert("✅ Request sent successfully!");
+        form.reset();
+        btn.disabled = false;
+        btnText.style.display = "inline-block";
+        btnSpinner.style.display = "none";
+      },
+      (error) => {
+        alert("❌ Failed to send. Please try again.");
+        console.error(error);
+        btn.disabled = false;
+        btnText.style.display = "inline-block";
+        btnSpinner.style.display = "none";
       }
-
-      spinner.style.display = "inline-block";
-
-      setTimeout(() => {
-        spinner.style.display = "none";
-        alert("Your request has been received!\nWe are generating your portfolio. Please wait for 30–60 minutes.");
-        window.location.href = "success.html";
-      }, 3000);
-    });
-  </script>
+    );
+  });
+</script>
 </body>
 </html>
