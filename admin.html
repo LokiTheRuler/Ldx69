@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - FolioBuilder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0f0f0f;
+      color: #fff;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ffd1;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #1e1e1e;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #444;
+      text-align: left;
+    }
+    th {
+      background-color: #222;
+    }
+    .btn {
+      padding: 5px 10px;
+      background: #00ffd1;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .hidden {
+      display: none;
+    }
+    #loginPanel {
+      text-align: center;
+      margin-top: 50px;
+    }
+    input[type="password"] {
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+      border-radius: 5px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="loginPanel">
+    <h2>Admin Login</h2>
+    <input type="password" id="adminPass" placeholder="Enter password..." />
+    <button class="btn" onclick="login()">Login</button>
+  </div>
+
+  <div id="adminPanel" class="hidden">
+    <h1>📋 Admin Dashboard</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Theme</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="requestsTable">
+        <tr>
+          <td>John Doe</td>
+          <td>john@example.com</td>
+          <td>Dark Theme</td>
+          <td><span style="color: orange;">Pending</span></td>
+          <td><button class="btn">Mark as Done</button></td>
+        </tr>
+        <tr>
+          <td>Jane Smith</td>
+          <td>jane@example.com</td>
+          <td>Minimal</td>
+          <td><span style="color: green;">Processed</span></td>
+          <td><button class="btn">View</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function login() {
+      const pass = document.getElementById('adminPass').value;
+      if (pass === 'folioboss') {
+        document.getElementById('loginPanel').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+      } else {
+        alert('Wrong password!');
+      }
+    }
+  </script>
+</body>
+            </html>
