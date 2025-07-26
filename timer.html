@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Generating Your Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
-      background: #000;
-      color: #ffcc00;
-      font-family: 'Orbitron', sans-serif;
+      background-color: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -18,85 +16,67 @@
       text-align: center;
       padding: 20px;
     }
-
     h1 {
       font-size: 2rem;
       margin-bottom: 10px;
     }
-
-    .loading-animation {
-      border: 6px solid rgba(255, 255, 255, 0.2);
-      border-top: 6px solid #ffcc00;
+    .spinner {
+      margin: 30px auto;
+      border: 6px solid rgba(255, 255, 255, 0.1);
+      border-top: 6px solid #00ffc3;
       border-radius: 50%;
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       animation: spin 1s linear infinite;
-      margin: 20px auto;
     }
-
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
-    .countdown {
+    #timer {
       font-size: 1.5rem;
-      margin-top: 20px;
+      margin-top: 10px;
     }
-
-    .note {
-      margin-top: 30px;
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    .btn {
-      margin-top: 30px;
-      padding: 12px 20px;
-      background-color: #ffcc00;
+    #doneBtn {
+      margin-top: 25px;
+      display: none;
+      background-color: #00ffc3;
       color: #000;
+      padding: 10px 20px;
       border: none;
-      border-radius: 25px;
-      font-weight: bold;
-      font-size: 1rem;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      font-weight: bold;
     }
-
-    .btn:hover {
-      background-color: #ffaa00;
+    #doneBtn:hover {
+      background-color: #00e0b0;
     }
   </style>
 </head>
 <body>
+  <h1>Hang tight, we're crafting your portfolio ✨</h1>
+  <div class="spinner"></div>
+  <p>This usually takes 30–60 minutes. You’ll be notified once it’s ready.</p>
+  <div id="timer">Loading timer...</div>
+  <button id="doneBtn" onclick="window.location.href='index.html'">Return to Homepage</button>  <script>
+    // Generate a random duration between 30–60 minutes (in seconds)
+    const duration = Math.floor(Math.random() * 1800) + 1800; // 1800s to 3600s
+    let timeLeft = duration;
 
-  <h1>Generating Your Custom Portfolio...</h1>
-  <div class="loading-animation"></div>
-
-  <div class="countdown" id="timer">Estimated Time Left: 45:00</div>
-
-  <p class="note">Our AI engine is building your website. You’ll be notified shortly.</p>
-
-  <button class="btn" onclick="location.href='https://t.me/XD_Loki';">Need Help? Contact Us</button>
-
-  <script>
-    let timeLeft = 45 * 60; // 45 minutes in seconds
-    const timerElement = document.getElementById('timer');
-
-    const updateTimer = () => {
+    function updateTimer() {
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
-      timerElement.textContent = `Estimated Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      document.getElementById("timer").innerText = `${minutes}m ${seconds}s remaining...`;
+
       if (timeLeft > 0) {
         timeLeft--;
         setTimeout(updateTimer, 1000);
       } else {
-        timerElement.textContent = "Your portfolio is ready!";
+        document.getElementById("timer").innerText = "Your portfolio is ready!";
+        document.getElementById("doneBtn").style.display = 'inline-block';
       }
-    };
+    }
 
     updateTimer();
-  </script>
-
-</body>
+  </script></body>
 </html>
