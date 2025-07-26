@@ -3,124 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Request Portfolio – FolioBuilder</title>
+  <title>Build Your Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #0d0d0d;
+      background-color: #0a0a0a;
+      color: #fff;
       font-family: 'Orbitron', sans-serif;
-      color: white;
       margin: 0;
-      padding: 30px 20px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
-
     h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 2.2rem;
+      font-size: 2em;
+      margin-bottom: 1rem;
     }
-
+    .theme-name {
+      color: #0ff;
+      margin-bottom: 2rem;
+      font-size: 1.2em;
+    }
     form {
-      max-width: 600px;
-      margin: auto;
-      background: #1a1a1a;
-      padding: 25px;
-      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: #121212;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+      width: 90%;
+      max-width: 400px;
     }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-size: 0.95rem;
+    input, textarea {
+      padding: 0.8rem;
+      border: 1px solid #444;
+      border-radius: 8px;
+      background-color: #1c1c1c;
+      color: #fff;
+      font-size: 1em;
+      transition: border 0.2s ease;
     }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 10px;
-      background: #262626;
+    input:focus, textarea:focus {
+      outline: none;
+      border: 1px solid #0ff;
+    }
+    .error {
+      border-color: red !important;
+    }
+    .error-text {
+      color: red;
+      font-size: 0.8em;
+    }
+    button {
+      padding: 0.8rem;
+      background-color: #0ff;
+      color: #000;
+      font-weight: bold;
       border: none;
       border-radius: 8px;
-      margin-top: 5px;
-      color: white;
-    }
-
-    .btn {
-      margin-top: 25px;
-      width: 100%;
-      background: #ffcc00;
-      color: black;
-      font-weight: bold;
-      padding: 12px;
-      border: none;
-      border-radius: 30px;
       cursor: pointer;
-      font-size: 1rem;
       transition: background 0.3s ease;
+      position: relative;
     }
-
-    .btn:hover {
-      background: #ffaa00;
+    button:hover {
+      background-color: #00cccc;
     }
-
-    .theme-preview {
-      color: #ffcc00;
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #000;
+      border-top: 3px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5em;
+      }
     }
   </style>
 </head>
 <body>
+  <h1>Let's Build Your Portfolio</h1>
+  <div class="theme-name">Theme: <span id="themeName">Default</span></div>
 
-  <h1>Submit Your Portfolio Request</h1>
+  <form id="folioForm">
+    <input type="text" id="name" placeholder="Your Name" required />
+    <div id="nameError" class="error-text" style="display:none;">Name is required</div>
 
-  <div class="theme-preview">
-    Selected Theme: <span id="themeName">Loading...</span>
-  </div>
+    <input type="email" id="email" placeholder="Your Email" required />
+    <div id="emailError" class="error-text" style="display:none;">Valid email required</div>
 
-  <form id="portfolioForm" action="timer.html">
-    <label>Full Name:</label>
-    <input type="text" required />
+    <textarea id="bio" placeholder="Short Bio (e.g. Developer, Designer)" rows="4" required></textarea>
+    <div id="bioError" class="error-text" style="display:none;">Bio is required</div>
 
-    <label>Email Address:</label>
-    <input type="email" required />
+    <input type="text" id="links" placeholder="Social Links (comma-separated)" required />
+    <div id="linksError" class="error-text" style="display:none;">Links are required</div>
 
-    <label>Bio (short intro):</label>
-    <textarea rows="3" required></textarea>
-
-    <label>Profile Picture URL:</label>
-    <input type="url" />
-
-    <label>Social Links (comma-separated):</label>
-    <input type="text" placeholder="Twitter, GitHub, LinkedIn, etc." />
-
-    <label>Resume (Google Drive or link):</label>
-    <input type="url" />
-
-    <label>Extra Feature:</label>
-    <select>
-      <option value="none">None</option>
-      <option value="animatedText">Animated Text</option>
-      <option value="scrollReveal">Scroll Reveal</option>
-    </select>
-
-    <label>Preferred Payment Method:</label>
-    <select required>
-      <option value="TON">TON</option>
-      <option value="USDT">USDT</option>
-      <option value="UPI">UPI</option>
-      <option value="Stripe">Stripe</option>
-    </select>
-
-    <button type="submit" class="btn">Submit & Generate</button>
+    <button type="submit">
+      <span class="btn-text">Build Portfolio</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
   </form>
 
   <script>
-    // Get theme from URL and display
-    const params = new URLSearchParams(window.location.search);
-    const theme = params.get('theme');
-    document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
-  </script>
+    // Set theme name dynamically from URL
+    const theme = new URLSearchParams(window.location.search).get("theme");
+    if (theme) document.getElementById("themeName").textContent = theme;
 
+    const form = document.getElementById("folioForm");
+    const spinner = document.getElementById("spinner");
+    const btnText = document.querySelector(".btn-text");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      // Reset errors
+      let hasError = false;
+      ["name", "email", "bio", "links"].forEach(field => {
+        const input = document.getElementById(field);
+        const error = document.getElementById(field + "Error");
+        input.classList.remove("error");
+        error.style.display = "none";
+
+        if (!input.value.trim()) {
+          input.classList.add("error");
+          error.style.display = "block";
+          hasError = true;
+        }
+
+        if (field === "email" && input.value && !/^\S+@\S+\.\S+$/.test(input.value)) {
+          input.classList.add("error");
+          error.textContent = "Enter a valid email address";
+          error.style.display = "block";
+          hasError = true;
+        }
+      });
+
+      if (hasError) return;
+
+      // Show spinner
+      spinner.style.display = "inline-block";
+      btnText.textContent = "";
+
+      // Simulate fake build delay (2s)
+      setTimeout(() => {
+        window.location.href = "success.html";
+      }, 2000);
+    });
+  </script>
 </body>
 </html>
