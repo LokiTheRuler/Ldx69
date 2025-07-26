@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Portfolio – FolioBuilder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+      margin: 0;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.2rem;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: #1a1a1a;
+      padding: 25px;
+      border-radius: 15px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 0.95rem;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      background: #262626;
+      border: none;
+      border-radius: 8px;
+      margin-top: 5px;
+      color: white;
+    }
+
+    .btn {
+      margin-top: 25px;
+      width: 100%;
+      background: #ffcc00;
+      color: black;
+      font-weight: bold;
+      padding: 12px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #ffaa00;
+    }
+
+    .theme-preview {
+      color: #ffcc00;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Submit Your Portfolio Request</h1>
+
+  <div class="theme-preview">
+    Selected Theme: <span id="themeName">Loading...</span>
+  </div>
+
+  <form id="portfolioForm" action="timer.html">
+    <label>Full Name:</label>
+    <input type="text" required />
+
+    <label>Email Address:</label>
+    <input type="email" required />
+
+    <label>Bio (short intro):</label>
+    <textarea rows="3" required></textarea>
+
+    <label>Profile Picture URL:</label>
+    <input type="url" />
+
+    <label>Social Links (comma-separated):</label>
+    <input type="text" placeholder="Twitter, GitHub, LinkedIn, etc." />
+
+    <label>Resume (Google Drive or link):</label>
+    <input type="url" />
+
+    <label>Extra Feature:</label>
+    <select>
+      <option value="none">None</option>
+      <option value="animatedText">Animated Text</option>
+      <option value="scrollReveal">Scroll Reveal</option>
+    </select>
+
+    <label>Preferred Payment Method:</label>
+    <select required>
+      <option value="TON">TON</option>
+      <option value="USDT">USDT</option>
+      <option value="UPI">UPI</option>
+      <option value="Stripe">Stripe</option>
+    </select>
+
+    <button type="submit" class="btn">Submit & Generate</button>
+  </form>
+
+  <script>
+    // Get theme from URL and display
+    const params = new URLSearchParams(window.location.search);
+    const theme = params.get('theme');
+    document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
+  </script>
+
+</body>
+        </html>
