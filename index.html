@@ -14,39 +14,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
+      justify-content: center;
       min-height: 100vh;
+      text-align: center;
       padding: 0 20px;
-    }
-
-    header {
-      width: 100%;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #0d0d0d;
-    }
-
-    .logo {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #ffcc00;
-    }
-
-    .language-selector {
-      background: #ffcc00;
-      border: none;
-      color: #000;
-      font-weight: bold;
-      padding: 10px;
-      border-radius: 10px;
-      cursor: pointer;
     }
 
     h1 {
       font-size: 2.8rem;
-      margin: 30px 0 10px;
+      margin-bottom: 10px;
     }
 
     p {
@@ -60,7 +36,7 @@
       gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 60px;
+      margin-bottom: 20px;
     }
 
     .btn {
@@ -80,51 +56,122 @@
       background: #ffaa00;
     }
 
-    footer {
-      margin-top: auto;
-      padding: 20px;
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffcc00;
+      margin-bottom: 10px;
     }
 
-    .translate-container {
+    .lang-dropdown {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .lang-btn {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .lang-options {
       display: none;
+      position: absolute;
+      top: 45px;
+      right: 0;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .lang-options button {
+      display: block;
+      width: 100%;
+      background: none;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .lang-options button:hover {
+      background: #444;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">FolioBuilder</div>
-    <select class="language-selector" onchange="changeLanguage(this.value)">
-      <option value="en">🌐 English</option>
-      <option value="ru">🇷🇺 Russian</option>
-      <option value="more">🔄 More Languages</option>
-    </select>
-  </header>
-
-  <h1>Craft Your Digital Presence</h1>
-  <p>Design. Impress. Stand Out. <br> Start your personal portfolio today.</p>
-
-  <div class="btn-container">
-    <a href="themes.html" class="btn">View Themes</a>
-    <a href="request.html" class="btn">Build Your Portfolio</a>
+  <div class="lang-dropdown">
+    <button class="lang-btn" onclick="toggleLangMenu()">🌐 Language</button>
+    <div class="lang-options" id="langOptions">
+      <button onclick="setLanguage('en')">English</button>
+      <button onclick="setLanguage('ru')">Русский</button>
+      <button onclick="googleTranslateElementInit()">Other (Google Translate)</button>
+    </div>
   </div>
 
-  <footer>
-    <a href="creations.html" class="btn">Our Previous Creations</a>
-  </footer>
+  <div class="logo">FolioBuilder</div>
+  <h1 id="main-title">Craft Your Digital Presence</h1>
+  <p id="subtitle">Design. Impress. Stand Out. <br> Start your personal portfolio today.</p>
 
-  <!-- Google Translate -->
-  <div id="google_translate_element" class="translate-container"></div>
-  <script type="text/javascript">
-    function changeLanguage(lang) {
-      if (lang === 'more') {
-        document.querySelector('.translate-container').style.display = 'block';
-        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
-      } else {
-        location.href = window.location.pathname + '?lang=' + lang;
-      }
+  <div class="btn-container">
+    <a href="theme.html" class="btn" id="view-themes-btn">View Themes</a>
+    <a href="request.html" class="btn" id="build-btn">Build Your Portfolio</a>
+    <a href="creations.html" class="btn" id="our-creations-btn">Our Previous Creations</a>
+  </div>
+
+  <div id="google_translate_element" style="display: none;"></div>
+
+  <script>
+    function toggleLangMenu() {
+      const menu = document.getElementById('langOptions');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function setLanguage(lang) {
+      const translations = {
+        en: {
+          title: "Craft Your Digital Presence",
+          subtitle: "Design. Impress. Stand Out. <br> Start your personal portfolio today.",
+          viewThemes: "View Themes",
+          buildPortfolio: "Build Your Portfolio",
+          ourCreations: "Our Previous Creations"
+        },
+        ru: {
+          title: "Создайте своё цифровое присутствие",
+          subtitle: "Проектируйте. Впечатляйте. Выделяйтесь. <br> Начните своё портфолио уже сегодня.",
+          viewThemes: "Посмотреть Темы",
+          buildPortfolio: "Создать Портфолио",
+          ourCreations: "Наши Работы"
+        }
+      };
+
+      document.getElementById('main-title').innerHTML = translations[lang].title;
+      document.getElementById('subtitle').innerHTML = translations[lang].subtitle;
+      document.getElementById('view-themes-btn').innerHTML = translations[lang].viewThemes;
+      document.getElementById('build-btn').innerHTML = translations[lang].buildPortfolio;
+      document.getElementById('our-creations-btn').innerHTML = translations[lang].ourCreations;
+    }
+
+    function googleTranslateElementInit() {
+      document.getElementById('google_translate_element').style.display = 'block';
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'de,fr,hi,ja,es,zh-CN',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
     }
   </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
