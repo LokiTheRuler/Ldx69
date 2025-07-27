@@ -152,50 +152,30 @@
     </select>
 
     <button type="submit" class="btn" id="submitBtn">
-      <span id="btnText">Request Portfolio</span>
-      <div class="spinner" id="btnSpinner"></div>
-    </button>
+  <span id="btnText">Submit & Generate</span>
+  <span id="spinner" style="display:none; margin-left:10px;">⏳</span>
+</button>
   </form>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
   <script>
-    // Set theme from URL
-    const params = new URLSearchParams(window.location.search);
-    const theme = params.get('theme');
-    document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
+  const params = new URLSearchParams(window.location.search);
+  const theme = params.get('theme');
+  document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
 
-    emailjs.init("GTDBjfcWeeqJfDY_-");
+  const form = document.getElementById('portfolioForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const spinner = document.getElementById('spinner');
 
-    const form = document.getElementById("portfolioForm");
-    const btn = document.getElementById("submitBtn");
-    const btnText = document.getElementById("btnText");
-    const btnSpinner = document.getElementById("btnSpinner");
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      // Spinner on
-      btn.disabled = true;
-      btnText.style.display = "none";
-      btnSpinner.style.display = "block";
-
-      emailjs.sendForm("service_digqqt9", "template_crjq52q", form).then(
-        () => {
-          alert("✅ Request sent successfully!");
-          window.location.href = "timer.html";
-        },
-        (error) => {
-          alert("❌ Failed to send. Try again.");
-          console.error(error);
-          btn.disabled = false;
-          btnText.style.display = "inline-block";
-          btnSpinner.style.display = "none";
-        }
-      );
-    });
-  </script>
+  form.addEventListener('submit', function () {
+    submitBtn.disabled = true;
+    btnText.textContent = "Processing...";
+    spinner.style.display = "inline-block";
+  });
+</script>
 
 </body>
 </html>
