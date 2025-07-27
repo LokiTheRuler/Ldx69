@@ -54,29 +54,80 @@
   </style>
 </head>
 <body>
-  <h1>Hang tight, we're crafting your portfolio ✨</h1>
-  <div class="spinner"></div>
-  <p>This usually takes 30–60 minutes. You’ll be notified once it’s ready.</p>
-  <div id="timer">Loading timer...</div>
-  <button id="doneBtn" onclick="window.location.href='index.html'">Return to Homepage</button>  <script>
-    // Generate a random duration between 30–60 minutes (in seconds)
-    const duration = Math.floor(Math.random() * 1800) + 1800; // 1800s to 3600s
-    let timeLeft = duration;
+  <div class="container">
+    <h1>Your Portfolio is Generating...</h1>
+    <p>Please wait while we finalize everything. You’ll be redirected shortly.</p>
+    <div id="timer">00:30</div>
 
-    function updateTimer() {
-      const minutes = Math.floor(timeLeft / 60);
-      const seconds = timeLeft % 60;
-      document.getElementById("timer").innerText = `${minutes}m ${seconds}s remaining...`;
+    <button onclick="window.location.href='index.html'" class="home-btn">← Back to Home</button>
+  </div>
 
-      if (timeLeft > 0) {
-        timeLeft--;
-        setTimeout(updateTimer, 1000);
-      } else {
-        document.getElementById("timer").innerText = "Your portfolio is ready!";
-        document.getElementById("doneBtn").style.display = 'inline-block';
-      }
+  <style>
+    body {
+      margin: 0;
+      background-color: #0d0d0d;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
     }
 
-    updateTimer();
-  </script></body>
+    .container {
+      max-width: 600px;
+      padding: 20px;
+      background-color: #1a1a1a;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ffaa00;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+      color: #ffcc00;
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 2.5rem;
+      margin: 20px 0;
+      color: #ffcc00;
+    }
+
+    .home-btn {
+      background-color: #ffcc00;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .home-btn:hover {
+      background-color: #ffaa00;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+
+  <script>
+    let timeLeft = 30;
+    const timer = document.getElementById('timer');
+    const interval = setInterval(() => {
+      timeLeft--;
+      timer.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+      if (timeLeft === 0) {
+        clearInterval(interval);
+        // redirect or show final message
+        window.location.href = "payment.html"; // or a final success screen
+      }
+    }, 1000);
+  </script>
+</body>
 </html>
