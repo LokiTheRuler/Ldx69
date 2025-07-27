@@ -1,67 +1,57 @@
-<!-- New Secure Admin Panel: admin.html --><!DOCTYPE html><html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
-  <link rel="stylesheet" href="admin.css">
-</head>
-<body>
-  <div id="loginScreen">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPassword" placeholder="Enter Admin Password">
-    <button onclick="login()">Login</button>
-    <p id="loginError" style="color:red;"></p>
-  </div>  <div id="adminPanel" style="display:none">
-    <h1>Welcome, Admin</h1><section>
-  <h2>Requests</h2>
-  <div id="requestList">
-    <!-- Dynamically populated -->
-  </div>
-</section>
+// Admin Panel (Next Version with Creations Integration)
 
-<section>
-  <h2>Add New Creation</h2>
-  <input type="text" id="creationTitle" placeholder="Portfolio Title">
-  <input type="text" id="creationLink" placeholder="Portfolio Link">
-  <input type="text" id="creationImage" placeholder="Thumbnail Image URL">
-  <button onclick="addCreation()">Add Creation</button>
-</section>
+import React, { useState, useEffect } from 'react'; import { Card, CardContent } from '@/components/ui/card'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { Textarea } from '@/components/ui/textarea';
 
-<section>
-  <h2>Manage Creations</h2>
-  <div id="creationsList">
-    <!-- List of previously added creations -->
-  </div>
-</section>
+const PASSWORD = 'foliobuilderadmin';
 
-  </div>  <script>
-    const ADMIN_PASSWORD = 'LokiTh3Rul3r'; // Replace this
+export default function AdminPanel() { const [authenticated, setAuthenticated] = useState(false); const [password, setPassword] = useState(''); const [creations, setCreations] = useState([]); const [title, setTitle] = useState(''); const [url, setUrl] = useState(''); const [requests, setRequests] = useState([]);
 
-    function login() {
-      const input = document.getElementById('adminPassword').value;
-      if (input === ADMIN_PASSWORD) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('adminPanel').style.display = 'block';
-        loadRequests();
-        loadCreations();
-      } else {
-        document.getElementById('loginError').innerText = 'Incorrect password';
-      }
-    }
+useEffect(() => { const storedAuth = localStorage.getItem('admin_auth'); if (storedAuth === 'true') setAuthenticated(true); }, []);
 
-    function loadRequests() {
-      // Load requests logic here (use JSON or Firestore if needed)
-    }
+const handleLogin = () => { if (password === PASSWORD) { setAuthenticated(true); localStorage.setItem('admin_auth', 'true'); } else { alert('Incorrect password'); } };
 
-    function addCreation() {
-      const title = document.getElementById('creationTitle').value;
-      const link = document.getElementById('creationLink').value;
-      const image = document.getElementById('creationImage').value;
-      // Save creation logic (localStorage or backend call)
-    }
+const addCreation = () => { if (title && url) { const updatedCreations = [...creations, { title, url }]; setCreations(updatedCreations); localStorage.setItem('creations', JSON.stringify(updatedCreations)); setTitle(''); setUrl(''); } };
 
-    function loadCreations() {
-      // Load creations logic here
-    }
-  </script></body>
-</html>
+const acceptRequest = (id) => { // Simulate request acceptance alert(Request ID ${id} accepted. Email sent to user.); // Here you could use EmailJS or backend email notification };
+
+if (!authenticated) { return ( <div className="p-6 max-w-sm mx-auto"> <Card> <CardContent className="space-y-4"> <h2 className="text-xl font-bold">Admin Login</h2> <Input type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} /> <Button onClick={handleLogin}>Login</Button> </CardContent> </Card> </div> ); }
+
+return ( <div className="p-6 max-w-3xl mx-auto space-y-8"> <h1 className="text-2xl font-bold text-center">Admin Dashboard</h1>
+
+<Card>
+    <CardContent className="space-y-4">
+      <h2 className="text-lg font-semibold">Add New Creation</h2>
+      <Input
+        placeholder="Portfolio Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <Input
+        placeholder="Portfolio URL"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+      />
+      <Button onClick={addCreation}>Add Creation</Button>
+    </CardContent>
+  </Card>
+
+  <Card>
+    <CardContent className="space-y-4">
+      <h2 className="text-lg font-semibold">User Requests</h2>
+      {requests.length === 0 ? (
+        <p>No requests yet.</p>
+      ) : (
+        requests.map((req, idx) => (
+          <div key={idx} className="border p-2 rounded space-y-1">
+            <p><strong>User:</strong> {req.name}</p>
+            <p><strong>Email:</strong> {req.email}</p>
+            <Button onClick={() => acceptRequest(idx)}>Accept Request</Button>
+          </div>
+        ))
+      )}
+    </CardContent>
+  </Card>
+</div>
+
+); }
+
