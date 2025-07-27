@@ -75,15 +75,15 @@
 
     .spinner {
       display: none;
-      width: 22px;
-      height: 22px;
-      border: 3px solid #000;
-      border-top: 3px solid transparent;
+      width: 18px;
+      height: 18px;
+      border: 2px solid black;
+      border-top: 2px solid transparent;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       position: absolute;
-      top: 13px;
       right: 20px;
+      top: 13px;
     }
 
     @keyframes spin {
@@ -98,10 +98,6 @@
       margin-bottom: 20px;
       font-size: 1.1rem;
     }
-
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -114,94 +110,92 @@
 
   <form id="portfolioForm">
     <label>Full Name:</label>
-    <input type="text" id="name" required />
+    <input type="text" id="name" name="full_name" required />
 
     <label>Email Address:</label>
-    <input type="email" id="email" required />
+    <input type="email" id="email" name="email" required />
 
     <label>Bio:</label>
-    <textarea rows="3" id="bio"></textarea>
+    <textarea rows="3" id="bio" name="bio"></textarea>
     <div class="checkbox-group">
-      <label><input type="checkbox" id="showBio" checked /> Show Bio</label>
+      <label><input type="checkbox" id="showBio" name="show_bio" checked /> Show Bio</label>
     </div>
 
     <label>Profile Picture URL:</label>
-    <input type="url" id="profilePic" />
+    <input type="url" id="profilePic" name="profile_pic" />
 
     <label>Social Links:</label>
-    <input type="text" id="socialLinks" placeholder="Twitter, GitHub, LinkedIn" />
+    <input type="text" id="socialLinks" name="social_links" placeholder="Twitter, GitHub, LinkedIn" />
     <div class="checkbox-group">
-      <label><input type="checkbox" id="showSocial" checked /> Show Social Links</label>
+      <label><input type="checkbox" id="showSocial" name="show_social" checked /> Show Social Links</label>
     </div>
 
     <label>Resume / CV Link:</label>
-    <input type="url" id="resume" />
+    <input type="url" id="resume" name="resume" />
     <div class="checkbox-group">
-      <label><input type="checkbox" id="showResume" /> Show Resume</label>
+      <label><input type="checkbox" id="showResume" name="show_resume" /> Show Resume</label>
     </div>
 
     <label>Extra Feature:</label>
-    <select id="feature">
+    <select id="feature" name="feature">
       <option value="none">None</option>
       <option value="animatedText">Animated Text</option>
       <option value="scrollReveal">Scroll Reveal</option>
     </select>
 
     <label>Preferred Payment Method:</label>
-    <select id="payment" required>
+    <select id="payment" name="payment_method" required>
       <option value="TON">TON</option>
       <option value="USDT">USDT</option>
       <option value="UPI">UPI</option>
       <option value="Stripe">Stripe</option>
     </select>
 
-    <button type="submit" id="submitBtn">
-  <span id="btnText">Request Portfolio</span>
-  <span id="btnSpinner" style="display: none;">⏳</span>
-</button>
+    <button type="submit" class="btn" id="submitBtn">
+      <span id="btnText">Request Portfolio</span>
+      <div class="spinner" id="btnSpinner"></div>
+    </button>
+  </form>
 
   <!-- EmailJS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-<!-- Loader + Form Submission Script -->
-<script type="text/javascript">
-  // Initialize EmailJS
-  (function () {
-    emailjs.init("GTDBjfcWeeqJfDY_-"); // Your Public Key
-  })();
+  <script>
+    // Set theme from URL
+    const params = new URLSearchParams(window.location.search);
+    const theme = params.get('theme');
+    document.getElementById("themeName").textContent = theme ? decodeURIComponent(theme) : "Not Selected";
 
-  // Form submission handler
-  document.getElementById("folioForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+    emailjs.init("GTDBjfcWeeqJfDY_-");
 
-    const form = this;
+    const form = document.getElementById("portfolioForm");
     const btn = document.getElementById("submitBtn");
     const btnText = document.getElementById("btnText");
     const btnSpinner = document.getElementById("btnSpinner");
 
-    // Show loading spinner
-    btn.disabled = true;
-    btnText.style.display = "none";
-    btnSpinner.style.display = "inline-block";
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    // Send email using EmailJS
-    emailjs.sendForm("service_digqqt9", "template_crjq52q", form).then(
-      () => {
-        alert("✅ Request sent successfully!");
-        form.reset();
-        btn.disabled = false;
-        btnText.style.display = "inline-block";
-        btnSpinner.style.display = "none";
-      },
-      (error) => {
-        alert("❌ Failed to send. Please try again.");
-        console.error(error);
-        btn.disabled = false;
-        btnText.style.display = "inline-block";
-        btnSpinner.style.display = "none";
-      }
-    );
-  });
-</script>
+      // Spinner on
+      btn.disabled = true;
+      btnText.style.display = "none";
+      btnSpinner.style.display = "block";
+
+      emailjs.sendForm("service_digqqt9", "template_crjq52q", form).then(
+        () => {
+          alert("✅ Request sent successfully!");
+          window.location.href = "timer.html";
+        },
+        (error) => {
+          alert("❌ Failed to send. Try again.");
+          console.error(error);
+          btn.disabled = false;
+          btnText.style.display = "inline-block";
+          btnSpinner.style.display = "none";
+        }
+      );
+    });
+  </script>
+
 </body>
 </html>
