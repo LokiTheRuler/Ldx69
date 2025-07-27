@@ -20,6 +20,38 @@
       padding: 0 20px;
     }
 
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffcc00;
+      margin-top: 20px;
+    }
+
+    .language-btn {
+      margin: 15px 0;
+      background: #222;
+      border: 1px solid #555;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .language-list {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .language-list button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: none;
+      background: #444;
+      color: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
     h1 {
       font-size: 2.8rem;
       margin-bottom: 10px;
@@ -36,7 +68,6 @@
       gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 20px;
     }
 
     .btn {
@@ -56,122 +87,84 @@
       background: #ffaa00;
     }
 
-    .logo {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #ffcc00;
-      margin-bottom: 10px;
-    }
-
-    .lang-dropdown {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-
-    .lang-btn {
-      background: #333;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .lang-options {
-      display: none;
-      position: absolute;
-      top: 45px;
-      right: 0;
-      background: #222;
-      border: 1px solid #444;
-      border-radius: 10px;
-      overflow: hidden;
-      z-index: 1000;
-    }
-
-    .lang-options button {
-      display: block;
+    .divider {
+      margin: 40px 0 10px;
       width: 100%;
-      background: none;
-      color: white;
+      height: 2px;
+      background: linear-gradient(90deg, #00f0ff, #ff00d4);
       border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      font-size: 0.9rem;
     }
 
-    .lang-options button:hover {
-      background: #444;
+    .tagline {
+      font-size: 1rem;
+      color: #ffcc00;
+      margin-bottom: 30px;
     }
+
   </style>
 </head>
 <body>
 
-  <div class="lang-dropdown">
-    <button class="lang-btn" onclick="toggleLangMenu()">🌐 Language</button>
-    <div class="lang-options" id="langOptions">
-      <button onclick="setLanguage('en')">English</button>
-      <button onclick="setLanguage('ru')">Русский</button>
-      <button onclick="googleTranslateElementInit()">Other (Google Translate)</button>
-    </div>
+  <div class="logo">FolioBuilder</div>
+
+  <button class="language-btn" onclick="toggleLanguages()">🌐 Change Language</button>
+  <div class="language-list" id="languageList">
+    <button onclick="setLanguage('en')">English</button>
+    <button onclick="setLanguage('ru')">Русский</button>
+    <button onclick="googleTranslate()">🌍 Others</button>
   </div>
 
-  <div class="logo">FolioBuilder</div>
   <h1 id="main-title">Craft Your Digital Presence</h1>
-  <p id="subtitle">Design. Impress. Stand Out. <br> Start your personal portfolio today.</p>
+  <p id="main-desc">Design. Impress. Stand Out. <br> Start your personal portfolio today.</p>
 
   <div class="btn-container">
-    <a href="theme.html" class="btn" id="view-themes-btn">View Themes</a>
-    <a href="request.html" class="btn" id="build-btn">Build Your Portfolio</a>
-    <a href="creations.html" class="btn" id="our-creations-btn">Our Previous Creations</a>
+    <a href="themes.html" class="btn" id="btn-themes">View Themes</a>
+    <a href="request.html" class="btn" id="btn-build">Build Your Portfolio</a>
   </div>
 
-  <div id="google_translate_element" style="display: none;"></div>
+  <hr class="divider" />
+  <div class="tagline">Created With Honour ❤️</div>
+
+  <div class="btn-container">
+    <a href="creations.html" class="btn" id="btn-creations">Our Previous Creations</a>
+  </div>
 
   <script>
-    function toggleLangMenu() {
-      const menu = document.getElementById('langOptions');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    function toggleLanguages() {
+      const list = document.getElementById('languageList');
+      list.style.display = list.style.display === 'block' ? 'none' : 'block';
     }
 
     function setLanguage(lang) {
-      const translations = {
+      const elements = {
         en: {
           title: "Craft Your Digital Presence",
-          subtitle: "Design. Impress. Stand Out. <br> Start your personal portfolio today.",
-          viewThemes: "View Themes",
-          buildPortfolio: "Build Your Portfolio",
-          ourCreations: "Our Previous Creations"
+          desc: "Design. Impress. Stand Out. <br> Start your personal portfolio today.",
+          themes: "View Themes",
+          build: "Build Your Portfolio",
+          creations: "Our Previous Creations"
         },
         ru: {
-          title: "Создайте своё цифровое присутствие",
-          subtitle: "Проектируйте. Впечатляйте. Выделяйтесь. <br> Начните своё портфолио уже сегодня.",
-          viewThemes: "Посмотреть Темы",
-          buildPortfolio: "Создать Портфолио",
-          ourCreations: "Наши Работы"
+          title: "Создай Своё Цифровое Присутствие",
+          desc: "Дизайн. Впечатляй. Выделяйся. <br> Начни создавать портфолио уже сегодня.",
+          themes: "Просмотреть Темы",
+          build: "Создать Портфолио",
+          creations: "Наши Работы"
         }
       };
 
-      document.getElementById('main-title').innerHTML = translations[lang].title;
-      document.getElementById('subtitle').innerHTML = translations[lang].subtitle;
-      document.getElementById('view-themes-btn').innerHTML = translations[lang].viewThemes;
-      document.getElementById('build-btn').innerHTML = translations[lang].buildPortfolio;
-      document.getElementById('our-creations-btn').innerHTML = translations[lang].ourCreations;
+      const content = elements[lang];
+      document.getElementById('main-title').innerHTML = content.title;
+      document.getElementById('main-desc').innerHTML = content.desc;
+      document.getElementById('btn-themes').innerText = content.themes;
+      document.getElementById('btn-build').innerText = content.build;
+      document.getElementById('btn-creations').innerText = content.creations;
     }
 
-    function googleTranslateElementInit() {
-      document.getElementById('google_translate_element').style.display = 'block';
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'de,fr,hi,ja,es,zh-CN',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
+    function googleTranslate() {
+      alert("Google Translate support will be integrated soon.");
     }
   </script>
-
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
