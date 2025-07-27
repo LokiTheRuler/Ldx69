@@ -1,57 +1,106 @@
-// Admin Panel (Next Version with Creations Integration)
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - FolioBuilder</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f0f0f;
+      color: #f5f5f5;
+    }
+    .login-screen, .dashboard {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .login-screen.active, .dashboard.active {
+      display: flex;
+    }
+    input[type="password"] {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      background: #1e90ff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .panel {
+      display: flex;
+      gap: 40px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    textarea, input[type="text"] {
+      width: 300px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    .box {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-screen active" id="loginScreen">
+    <h2>Admin Login</h2>
+    <input type="password" id="adminPassword" placeholder="Enter Password" />
+    <button onclick="login()">Login</button>
+  </div>  <div class="dashboard" id="adminPanel">
+    <h1>Welcome, Admin</h1>
+    <div class="panel">
+      <div class="box">
+        <h2>Add Creation</h2>
+        <input type="text" id="creationTitle" placeholder="Title" />
+        <input type="text" id="creationLink" placeholder="Link" />
+        <button onclick="addCreation()">Add</button>
+      </div>
+      <div class="box">
+        <h2>Accept Request</h2>
+        <input type="text" id="userEmail" placeholder="User Email" />
+        <input type="text" id="portfolioLink" placeholder="Portfolio Link" />
+        <button onclick="acceptRequest()">Send Success</button>
+      </div>
+    </div>
+  </div>  <script>
+    const password = "LokiTh3Rul3r";
 
-import React, { useState, useEffect } from 'react'; import { Card, CardContent } from '@/components/ui/card'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { Textarea } from '@/components/ui/textarea';
+    function login() {
+      const input = document.getElementById("adminPassword").value;
+      if (input === password) {
+        document.getElementById("loginScreen").classList.remove("active");
+        document.getElementById("adminPanel").classList.add("active");
+      } else {
+        alert("Incorrect Password");
+      }
+    }
 
-const PASSWORD = 'foliobuilderadmin';
+    function addCreation() {
+      const title = document.getElementById("creationTitle").value;
+      const link = document.getElementById("creationLink").value;
+      alert(`Creation Added:\nTitle: ${title}\nLink: ${link}`);
+      // Integrate Firebase/Backend here
+    }
 
-export default function AdminPanel() { const [authenticated, setAuthenticated] = useState(false); const [password, setPassword] = useState(''); const [creations, setCreations] = useState([]); const [title, setTitle] = useState(''); const [url, setUrl] = useState(''); const [requests, setRequests] = useState([]);
-
-useEffect(() => { const storedAuth = localStorage.getItem('admin_auth'); if (storedAuth === 'true') setAuthenticated(true); }, []);
-
-const handleLogin = () => { if (password === PASSWORD) { setAuthenticated(true); localStorage.setItem('admin_auth', 'true'); } else { alert('Incorrect password'); } };
-
-const addCreation = () => { if (title && url) { const updatedCreations = [...creations, { title, url }]; setCreations(updatedCreations); localStorage.setItem('creations', JSON.stringify(updatedCreations)); setTitle(''); setUrl(''); } };
-
-const acceptRequest = (id) => { // Simulate request acceptance alert(Request ID ${id} accepted. Email sent to user.); // Here you could use EmailJS or backend email notification };
-
-if (!authenticated) { return ( <div className="p-6 max-w-sm mx-auto"> <Card> <CardContent className="space-y-4"> <h2 className="text-xl font-bold">Admin Login</h2> <Input type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} /> <Button onClick={handleLogin}>Login</Button> </CardContent> </Card> </div> ); }
-
-return ( <div className="p-6 max-w-3xl mx-auto space-y-8"> <h1 className="text-2xl font-bold text-center">Admin Dashboard</h1>
-
-<Card>
-    <CardContent className="space-y-4">
-      <h2 className="text-lg font-semibold">Add New Creation</h2>
-      <Input
-        placeholder="Portfolio Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <Input
-        placeholder="Portfolio URL"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-      />
-      <Button onClick={addCreation}>Add Creation</Button>
-    </CardContent>
-  </Card>
-
-  <Card>
-    <CardContent className="space-y-4">
-      <h2 className="text-lg font-semibold">User Requests</h2>
-      {requests.length === 0 ? (
-        <p>No requests yet.</p>
-      ) : (
-        requests.map((req, idx) => (
-          <div key={idx} className="border p-2 rounded space-y-1">
-            <p><strong>User:</strong> {req.name}</p>
-            <p><strong>Email:</strong> {req.email}</p>
-            <Button onClick={() => acceptRequest(idx)}>Accept Request</Button>
-          </div>
-        ))
-      )}
-    </CardContent>
-  </Card>
-</div>
-
-); }
-
+    function acceptRequest() {
+      const email = document.getElementById("userEmail").value;
+      const portfolio = document.getElementById("portfolioLink").value;
+      alert(`Success Message Sent to ${email} for: ${portfolio}`);
+      // Integrate EmailJS/SMTP function here
+    }
+  </script></body>
+</html>
