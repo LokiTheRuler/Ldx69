@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Previous Creations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #ffcc00;
+  margin-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background-color: #1a1a1a;
+  border: 2px solid #ffcc00;
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 20px #ffcc00;
+}
+
+.card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #bbbbbb;
+  margin-bottom: 15px;
+}
+
+.card a {
+  display: inline-block;
+  background-color: #ffcc00;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.card a:hover {
+  background-color: #ffaa00;
+}
+
+  </style>
+</head>
+<body>  <h1>Our Previous Creations</h1>
+  <div class="grid" id="creationsContainer">
+    <!-- Cards will be injected here -->
+  </div>  <script>
+    async function loadCreations() {
+      try {
+        const res = await fetch('creations.json');
+        const data = await res.json();
+        const container = document.getElementById('creationsContainer');
+
+        data.creations.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${item.image}" alt="${item.title}" />
+            <h2>${item.title}</h2>
+            <p>${item.description}</p>
+            <a href="${item.link}" target="_blank">Live Preview</a>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Failed to load creations:', err);
+      }
+    }
+
+    loadCreations();
+  </script></body>
+</html>
