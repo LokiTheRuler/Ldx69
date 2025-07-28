@@ -76,7 +76,7 @@
       background-color: #ffaa00;
     }
 
-    /* Floating Back Button (Bottom-Center) */
+    /* ✅ Floating Back Button (Bottom-Center with No Text Wrap) */
     .floating-back-button {
       position: fixed;
       bottom: 30px;
@@ -91,6 +91,7 @@
       box-shadow: 0 0 20px #ffcc00;
       transition: all 0.3s ease;
       z-index: 1000;
+      white-space: nowrap;
     }
 
     .floating-back-button:hover {
@@ -102,12 +103,13 @@
 <body>
 
   <h1>Our Previous Creations</h1>
+
   <div class="grid" id="creationsContainer">
-    <!-- Cards will be injected here -->
+    <!-- Portfolio cards will be loaded here -->
   </div>
 
-  <!-- Floating Back Button -->
-  <a href="index.html" class="floating-back-button">⬅ Back to Home </a>
+  <!-- ✅ Floating Bottom-Center Back Button -->
+  <a href="index.html" class="floating-back-button">⬅ Back to Home</a>
 
   <script>
     async function loadCreations() {
@@ -134,5 +136,6 @@
 
     loadCreations();
   </script>
+
 </body>
 </html>
