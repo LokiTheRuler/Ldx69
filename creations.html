@@ -6,133 +6,121 @@
   <title>Our Previous Creations</title>
   <style>
     body {
+      font-family: sans-serif;
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0f0f0f;
+      padding: 0;
+      background-color: #111;
       color: #fff;
     }
 
-    h1 {
-      text-align: center;
-      padding: 20px;
-      color: #ffcc00;
-    }
-
-    .creations-container {
+    .container {
+      padding: 2rem;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
+      gap: 2rem;
     }
 
-    .creation-card {
-      background-color: #1c1c1c;
-      border-radius: 15px;
+    .card {
+      background: #1e1e1e;
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
-      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      transition: 0.3s;
     }
 
-    .creation-card:hover {
-      transform: scale(1.03);
+    .card:hover {
+      transform: scale(1.02);
     }
 
-    .creation-image {
+    .card img {
       width: 100%;
       height: 200px;
       object-fit: cover;
     }
 
-    .creation-info {
-      padding: 15px;
+    .card .info {
+      padding: 1rem;
       text-align: center;
     }
 
-    .creation-info h3 {
-      margin: 10px 0;
-      color: #fff;
+    .info h3 {
+      margin: 0.5rem 0;
     }
 
-    .watch-btn {
-      background-color: #ffcc00;
-      color: #000;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
+    .info a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #4caf50;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
     }
 
-    .watch-btn:hover {
-      background-color: #e6b800;
-    }
-
-    .floating-back-button {
+    /* Floating back button */
+    .back-btn {
       position: fixed;
-      bottom: 30px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background-color: #ffcc00;
-      color: #000;
-      padding: 14px 28px;
-      border-radius: 50px;
-      font-weight: bold;
-      text-decoration: none;
-      box-shadow: 0 0 20px #ffcc00;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 500px) {
-      .creation-image {
-        height: 160px;
-      }
-
-      .watch-btn {
-        padding: 8px 16px;
-      }
+      background-color: #ff9800;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>🌟 Our Previous Creations 🌟</h1>
 
-  <div class="creations-container" id="creations-container">
-    <!-- Dynamic content will appear here -->
+  <h1 style="text-align:center; padding-top: 1rem;">🚀 Our Previous Creations</h1>
+  <div class="container" id="creationsContainer">
+    <!-- Cards will be injected here -->
   </div>
 
-  <!-- Floating Back Button -->
-  <a href="index.html" class="floating-back-button">⬅ Back to Home</a>
+  <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
 
-  <!-- Script to load creations -->
-  <script>
-    fetch('creations.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('creations-container');
-        data.creations.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'creation-card';
-          card.innerHTML = `
-            <img src="${item.image}" alt="${item.title}" class="creation-image" />
-            <div class="creation-info">
-              <h3>${item.title}</h3>
-              <a href="${item.link}" target="_blank">
-                <button class="watch-btn">Watch ${item.title.split(" ")[0]}'s Portfolio</button>
-              </a>
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      })
-      .catch(error => {
-        document.getElementById('creations-container').innerHTML = "<p style='text-align:center;'>Failed to load creations. Please try again later.</p>";
-        console.error("Error loading creations.json:", error);
+  <!-- Firebase App -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0I6KNECyg-pT8Tz0_KjuEz5SmXBVJag0",
+      authDomain: "folio-request-team.firebaseapp.com",
+      projectId: "folio-request-team",
+      storageBucket: "folio-request-team.appspot.com",
+      messagingSenderId: "1090768296358",
+      appId: "1:1090768296358:web:fb5c05cce9f0f4c8691767",
+      measurementId: "G-S71Q1D0LZP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadCreations() {
+      const querySnapshot = await getDocs(collection(db, "creations"));
+      const container = document.getElementById("creationsContainer");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.innerHTML = `
+          <img src="${data.image}" alt="${data.name}">
+          <div class="info">
+            <h3>${data.name}</h3>
+            <a href="${data.portfolioLink}" target="_blank">Watch ${data.name}'s Portfolio</a>
+          </div>
+        `;
+        container.appendChild(card);
       });
+    }
+
+    loadCreations();
   </script>
 </body>
 </html>
