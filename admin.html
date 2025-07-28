@@ -1,106 +1,83 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel - FolioBuilder</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0f0f0f;
-      color: #f5f5f5;
-    }
-    .login-screen, .dashboard {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-    }
-    .login-screen.active, .dashboard.active {
-      display: flex;
-    }
-    input[type="password"] {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      margin-top: 10px;
-    }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      border: none;
-      background: #1e90ff;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .panel {
-      display: flex;
-      gap: 40px;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    textarea, input[type="text"] {
-      width: 300px;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-    }
-    h2 {
-      margin-bottom: 10px;
-    }
-    .box {
-      margin-bottom: 20px;
-    }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <div class="login-screen active" id="loginScreen">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPassword" placeholder="Enter Password" />
-    <button onclick="login()">Login</button>
-  </div>  <div class="dashboard" id="adminPanel">
-    <h1>Welcome, Admin</h1>
-    <div class="panel">
-      <div class="box">
-        <h2>Add Creation</h2>
-        <input type="text" id="creationTitle" placeholder="Title" />
-        <input type="text" id="creationLink" placeholder="Link" />
-        <button onclick="addCreation()">Add</button>
-      </div>
-      <div class="box">
-        <h2>Accept Request</h2>
-        <input type="text" id="userEmail" placeholder="User Email" />
-        <input type="text" id="portfolioLink" placeholder="Portfolio Link" />
-        <button onclick="acceptRequest()">Send Success</button>
-      </div>
-    </div>
-  </div>  <script>
-    const password = "LokiTh3Rul3r";
+<body class="bg-gray-900 text-white min-h-screen">
 
-    function login() {
-      const input = document.getElementById("adminPassword").value;
-      if (input === password) {
-        document.getElementById("loginScreen").classList.remove("active");
-        document.getElementById("adminPanel").classList.add("active");
+  <!-- Password Screen -->
+  <div id="loginScreen" class="flex flex-col items-center justify-center min-h-screen px-4">
+    <h2 class="text-3xl font-bold mb-4">🔐 Admin Access</h2>
+    <input type="password" id="adminPassword" placeholder="Enter admin password" class="p-3 rounded bg-gray-700 mb-4 w-full max-w-sm text-center outline-none border border-gray-600 focus:ring-2 focus:ring-blue-500" />
+    <button onclick="verifyPassword()" class="bg-blue-600 hover:bg-blue-700 p-3 rounded w-full max-w-sm font-semibold">Enter Panel</button>
+    <p id="errorText" class="text-red-500 mt-3 hidden">❌ Incorrect password!</p>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="hidden p-6">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="text-4xl font-bold mb-8 text-center">⚙️ FolioBuilder Admin Panel</h1>
+
+      <!-- Add Creation -->
+      <section class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">➕ Add New Creation</h2>
+        <form id="creationForm" class="space-y-4">
+          <input type="text" name="name" placeholder="User's Name" required class="w-full p-3 rounded bg-gray-700 border border-gray-600" />
+          <input type="url" name="image" placeholder="Hero Image URL" required class="w-full p-3 rounded bg-gray-700 border border-gray-600" />
+          <input type="url" name="portfolioLink" placeholder="Portfolio Link" required class="w-full p-3 rounded bg-gray-700 border border-gray-600" />
+          <button type="submit" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-semibold">✅ Add Creation</button>
+        </form>
+        <p id="statusMessage" class="text-green-400 mt-4 hidden">🎉 Creation added successfully!</p>
+      </section>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const PASSWORD = "LokiTh3Rul3r";
+
+    function verifyPassword() {
+      const input = document.getElementById('adminPassword').value;
+      const errorText = document.getElementById('errorText');
+      if (input === PASSWORD) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminPanel').classList.remove('hidden');
       } else {
-        alert("Incorrect Password");
+        errorText.classList.remove('hidden');
       }
     }
 
-    function addCreation() {
-      const title = document.getElementById("creationTitle").value;
-      const link = document.getElementById("creationLink").value;
-      alert(`Creation Added:\nTitle: ${title}\nLink: ${link}`);
-      // Integrate Firebase/Backend here
-    }
+    // Handle creation form submission
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('creationForm');
+      const statusMsg = document.getElementById('statusMessage');
 
-    function acceptRequest() {
-      const email = document.getElementById("userEmail").value;
-      const portfolio = document.getElementById("portfolioLink").value;
-      alert(`Success Message Sent to ${email} for: ${portfolio}`);
-      // Integrate EmailJS/SMTP function here
-    }
-  </script></body>
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = form.name.value.trim();
+        const image = form.image.value.trim();
+        const portfolioLink = form.portfolioLink.value.trim();
+
+        if (!name || !image || !portfolioLink) {
+          alert("🚫 All fields are required.");
+          return;
+        }
+
+        const newCreation = { name, image, portfolioLink };
+
+        const creations = JSON.parse(localStorage.getItem('creations')) || [];
+        creations.push(newCreation);
+        localStorage.setItem('creations', JSON.stringify(creations));
+
+        form.reset();
+        statusMsg.classList.remove('hidden');
+        setTimeout(() => statusMsg.classList.add('hidden'), 3000);
+      });
+    });
+  </script>
+</body>
 </html>
