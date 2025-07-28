@@ -76,36 +76,38 @@
       background-color: #ffaa00;
     }
 
-    /* Back Button Style */
-    .back-button {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background-color: #1a1a1a;
-      color: #ffcc00;
-      padding: 10px 18px;
-      border: 2px solid #ffcc00;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    .back-button:hover {
+    /* Floating Back Button (Bottom-Center) */
+    .floating-back-button {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       background-color: #ffcc00;
       color: #000;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 20px #ffcc00;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .floating-back-button:hover {
+      background-color: #ffaa00;
+      box-shadow: 0 0 30px #ffaa00, 0 0 15px #ffaa00 inset;
     }
   </style>
 </head>
 <body>
 
-  <!-- Back Button -->
-  <a href="index.html" class="back-button">⬅ Back to Home</a>
-
   <h1>Our Previous Creations</h1>
   <div class="grid" id="creationsContainer">
     <!-- Cards will be injected here -->
   </div>
+
+  <!-- Floating Back Button -->
+  <a href="index.html" class="floating-back-button">⬅ Back to Home</a>
 
   <script>
     async function loadCreations() {
