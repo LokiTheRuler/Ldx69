@@ -4,89 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Our Previous Creations</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
   <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #111;
-      color: #fff;
-    }
-
-    .container {
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-
-    .card {
-      background: #1e1e1e;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.02);
-    }
-
-    .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    .card .info {
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .info h3 {
-      margin: 0.5rem 0;
-    }
-
-    .info a {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: #4caf50;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-
-    /* Floating back button */
-    .back-btn {
+    .floating-btn {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background-color: #ff9800;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 30px;
+      background: #111827;
       color: white;
-      font-size: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      cursor: pointer;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transition: 0.3s ease;
+    }
+    .floating-btn:hover {
+      background-color: #1f2937;
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900">
 
-  <h1 style="text-align:center; padding-top: 1rem;">🚀 Our Previous Creations</h1>
-  <div class="container" id="creationsContainer">
-    <!-- Cards will be injected here -->
+  <div class="max-w-6xl mx-auto py-10 px-4">
+    <h1 class="text-4xl font-bold text-center mb-8">Our Previous Creations</h1>
+
+    <div id="creationsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </div>
 
-  <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+  <a href="index.html" class="floating-btn">Back to Home</a>
 
-  <!-- Firebase App -->
+  <!-- Firebase SDKs -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD0I6KNECyg-pT8Tz0_KjuEz5SmXBVJag0",
@@ -101,21 +52,26 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    const container = document.getElementById('creationsContainer');
+
     async function loadCreations() {
       const querySnapshot = await getDocs(collection(db, "creations"));
-      const container = document.getElementById("creationsContainer");
-
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const card = document.createElement("div");
-        card.classList.add("card");
+
+        const card = document.createElement('div');
+        card.className = "bg-white shadow-md rounded-lg overflow-hidden";
+
         card.innerHTML = `
-          <img src="${data.image}" alt="${data.name}">
-          <div class="info">
-            <h3>${data.name}</h3>
-            <a href="${data.portfolioLink}" target="_blank">Watch ${data.name}'s Portfolio</a>
+          <img src="${data.image}" alt="${data.name}" class="w-full h-56 object-cover">
+          <div class="p-4 text-center">
+            <h2 class="text-xl font-semibold mb-2">${data.name}</h2>
+            <a href="${data.link}" target="_blank" class="inline-block bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+              Watch ${data.name}'s Portfolio
+            </a>
           </div>
         `;
+
         container.appendChild(card);
       });
     }
