@@ -3,81 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - FolioBuilder</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Admin Panel - Add Creation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"/>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
+<body class="bg-gray-900 text-white min-h-screen p-6">
+  <div class="max-w-xl mx-auto bg-gray-800 rounded-xl p-6 shadow-lg">
+    <h1 class="text-2xl font-bold mb-4 text-center">Admin Panel – Add Portfolio</h1>
 
-  <!-- Password Screen -->
-  <div id="loginScreen" class="flex flex-col items-center justify-center min-h-screen px-4">
-    <h2 class="text-3xl font-bold mb-4">🔐 Admin Access</h2>
-    <input type="password" id="adminPassword" placeholder="Enter admin password" class="p-3 rounded bg-gray-700 mb-4 w-full max-w-sm text-center outline-none border border-gray-600 focus:ring-2 focus:ring-blue-500" />
-    <button onclick="verifyPassword()" class="bg-blue-600 hover:bg-blue-700 p-3 rounded w-full max-w-sm font-semibold">Enter Panel</button>
-    <p id="errorText" class="text-red-500 mt-3 hidden">❌ Incorrect password!</p>
-  </div>
+    <div class="space-y-4">
+      <input id="name" class="w-full p-3 rounded bg-gray-700 text-white" placeholder="User Name" />
+      <input id="imageUrl" class="w-full p-3 rounded bg-gray-700 text-white" placeholder="Image URL" />
+      <input id="portfolioUrl" class="w-full p-3 rounded bg-gray-700 text-white" placeholder="Portfolio Link" />
 
-  <!-- Admin Panel -->
-  <div id="adminPanel" class="hidden p-6">
-    <div class="max-w-2xl mx-auto">
-      <h1 class="text-4xl font-bold mb-8 text-center">⚙️ FolioBuilder Admin Panel</h1>
-
-      <!-- Add Creation -->
-      <section class="bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h2 class="text-xl font-semibold mb-4">➕ Add New Creation</h2>
-        <form id="creationForm" class="space-y-4">
-          <input type="text" name="name" placeholder="User's Name" required class="w-full p-3 rounded bg-gray-700 border border-gray-600" />
-          <input type="url" name="image" placeholder="Hero Image URL" required class="w-full p-3 rounded bg-gray-700 border border-gray-600" />
-          <input type="url" name="portfolioLink" placeholder="Portfolio Link" required class="w-full p-3 rounded bg-gray-700 border border-gray-600" />
-          <button type="submit" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-semibold">✅ Add Creation</button>
-        </form>
-        <p id="statusMessage" class="text-green-400 mt-4 hidden">🎉 Creation added successfully!</p>
-      </section>
+      <button onclick="submitCreation()" class="w-full p-3 bg-green-600 hover:bg-green-700 rounded text-white font-semibold">
+        Submit
+      </button>
     </div>
+
+    <p id="status" class="mt-4 text-center text-sm"></p>
   </div>
 
-  <!-- JavaScript -->
-  <script>
-    const PASSWORD = "LokiTh3Rul3r";
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Firebase Config
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-    function verifyPassword() {
-      const input = document.getElementById('adminPassword').value;
-      const errorText = document.getElementById('errorText');
-      if (input === PASSWORD) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('adminPanel').classList.remove('hidden');
-      } else {
-        errorText.classList.remove('hidden');
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0I6KNECyg-pT8Tz0_KjuEz5SmXBVJag0",
+      authDomain: "folio-request-team.firebaseapp.com",
+      projectId: "folio-request-team",
+      storageBucket: "folio-request-team.appspot.com",
+      messagingSenderId: "1090768296358",
+      appId: "1:1090768296358:web:fb5c05cce9f0f4c8691767",
+      measurementId: "G-S71Q1D0LZP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Submit creation to Firestore
+    async function submitCreation() {
+      const name = document.getElementById('name').value.trim();
+      const imageUrl = document.getElementById('imageUrl').value.trim();
+      const portfolioUrl = document.getElementById('portfolioUrl').value.trim();
+      const status = document.getElementById('status');
+
+      if (!name || !imageUrl || !portfolioUrl) {
+        status.textContent = "⚠️ Please fill in all fields!";
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "creations"), {
+          name,
+          imageUrl,
+          portfolioUrl,
+          createdAt: new Date()
+        });
+
+        status.textContent = "✅ Creation added successfully!";
+        document.getElementById('name').value = '';
+        document.getElementById('imageUrl').value = '';
+        document.getElementById('portfolioUrl').value = '';
+      } catch (e) {
+        status.textContent = "❌ Error adding creation!";
+        console.error("Error: ", e);
       }
     }
-
-    // Handle creation form submission
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('creationForm');
-      const statusMsg = document.getElementById('statusMessage');
-
-      form?.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const name = form.name.value.trim();
-        const image = form.image.value.trim();
-        const portfolioLink = form.portfolioLink.value.trim();
-
-        if (!name || !image || !portfolioLink) {
-          alert("🚫 All fields are required.");
-          return;
-        }
-
-        const newCreation = { name, image, portfolioLink };
-
-        const creations = JSON.parse(localStorage.getItem('creations')) || [];
-        creations.push(newCreation);
-        localStorage.setItem('creations', JSON.stringify(creations));
-
-        form.reset();
-        statusMsg.classList.remove('hidden');
-        setTimeout(() => statusMsg.classList.add('hidden'), 3000);
-      });
-    });
   </script>
 </body>
 </html>
