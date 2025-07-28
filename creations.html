@@ -2,81 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Our Previous Creations</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #0d0d0d;
-      color: white;
-      font-family: 'Orbitron', sans-serif;
       margin: 0;
-      padding: 20px;
-      position: relative;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f0f0f;
+      color: #fff;
     }
 
     h1 {
       text-align: center;
-      font-size: 2.5rem;
+      padding: 20px;
       color: #ffcc00;
-      margin-bottom: 40px;
     }
 
-    .grid {
+    .creations-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
     }
 
-    .card {
-      background-color: #1a1a1a;
-      border: 2px solid #ffcc00;
+    .creation-card {
+      background-color: #1c1c1c;
       border-radius: 15px;
       overflow: hidden;
-      padding: 20px;
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .creation-card:hover {
+      transform: scale(1.03);
+    }
+
+    .creation-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .creation-info {
+      padding: 15px;
       text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 20px #ffcc00;
+    .creation-info h3 {
+      margin: 10px 0;
+      color: #fff;
     }
 
-    .card img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-
-    .card h2 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      font-size: 1rem;
-      color: #bbbbbb;
-      margin-bottom: 15px;
-    }
-
-    .card a {
-      display: inline-block;
+    .watch-btn {
       background-color: #ffcc00;
       color: #000;
-      padding: 10px 20px;
-      border-radius: 25px;
-      text-decoration: none;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
       font-weight: bold;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
-    .card a:hover {
-      background-color: #ffaa00;
+    .watch-btn:hover {
+      background-color: #e6b800;
     }
 
-    /* ✅ Floating Back Button (Bottom-Center with No Text Wrap) */
     .floating-back-button {
       position: fixed;
       bottom: 30px;
@@ -94,48 +87,52 @@
       white-space: nowrap;
     }
 
-    .floating-back-button:hover {
-      background-color: #ffaa00;
-      box-shadow: 0 0 30px #ffaa00, 0 0 15px #ffaa00 inset;
+    @media (max-width: 500px) {
+      .creation-image {
+        height: 160px;
+      }
+
+      .watch-btn {
+        padding: 8px 16px;
+      }
     }
   </style>
 </head>
 <body>
+  <h1>🌟 Our Previous Creations 🌟</h1>
 
-  <h1>Our Previous Creations</h1>
-
-  <div class="grid" id="creationsContainer">
-    <!-- Portfolio cards will be loaded here -->
+  <div class="creations-container" id="creations-container">
+    <!-- Dynamic content will appear here -->
   </div>
 
-  <!-- ✅ Floating Bottom-Center Back Button -->
+  <!-- Floating Back Button -->
   <a href="index.html" class="floating-back-button">⬅ Back to Home</a>
 
+  <!-- Script to load creations -->
   <script>
-    async function loadCreations() {
-      try {
-        const res = await fetch('creations.json');
-        const data = await res.json();
-        const container = document.getElementById('creationsContainer');
-
+    fetch('creations.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('creations-container');
         data.creations.forEach(item => {
           const card = document.createElement('div');
-          card.className = 'card';
+          card.className = 'creation-card';
           card.innerHTML = `
-            <img src="${item.image}" alt="${item.title}" />
-            <h2>${item.title}</h2>
-            <p>${item.description}</p>
-            <a href="${item.link}" target="_blank">Live Preview</a>
+            <img src="${item.image}" alt="${item.title}" class="creation-image" />
+            <div class="creation-info">
+              <h3>${item.title}</h3>
+              <a href="${item.link}" target="_blank">
+                <button class="watch-btn">Watch ${item.title.split(" ")[0]}'s Portfolio</button>
+              </a>
+            </div>
           `;
           container.appendChild(card);
         });
-      } catch (err) {
-        console.error('Failed to load creations:', err);
-      }
-    }
-
-    loadCreations();
+      })
+      .catch(error => {
+        document.getElementById('creations-container').innerHTML = "<p style='text-align:center;'>Failed to load creations. Please try again later.</p>";
+        console.error("Error loading creations.json:", error);
+      });
   </script>
-
 </body>
 </html>
